@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block 'head' %}
+<link rel="stylesheet" href="{% static 'auth_app/css/register.css' %}">
+{% endblock %}
+
+{% block 'title' %}Login | Freelaqui{% endblock 'title' %}
+
+{% block 'body' %}
+    <div class="box">
+        <form action="{% url 'login' %}" method="POST">{% csrf_token %}
+            
+            {% if messages %}
+                {% for message in messages %}
+                    <div class="alert {{message.tags}}">
+                        {{message}}
+                    </div>
+                {% endfor %}
+            {% endif %}
+
+            <h1 class="titulo font-degrade borda-bottom-degrade">LOGIN</h1>
+            <br>
+            <span class="span-descricao">Username:</span>
+            <input type="text" class="form-control input-cadastro" name="username">
+            <br>
+            <span class="span-descricao">Password:</span>
+            <input type="password" class="form-control input-cadastro" name="password">
+            <br>
+            <input type="submit" value="LOGIN" class="btn btn-success btn-lg">
+            <a href="{% url 'register' %}" class="btn btn-primary btn-lg">New User</a>
+        </form>
+    </div>
+{% endblock %}
