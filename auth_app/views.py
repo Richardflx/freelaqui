@@ -5,6 +5,7 @@ from django.contrib import messages
 from django.contrib.messages import constants
 from django.contrib import auth
 
+
 def register(request):
     if request.method == 'GET':
         if request.user.is_authenticated:
