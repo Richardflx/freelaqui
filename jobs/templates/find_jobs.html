@@ -1,0 +1,82 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block 'head' %}
+
+    <link rel="stylesheet" href="{% static 'jobs/css/find_jobs.css' %}">
+
+{% endblock %}
+
+{% block 'body' %}
+    <div class="container">
+    <br>
+    <br>
+        <div class="row">
+
+            <div class="col-sm">
+            <form action="/teste" method="POST">
+                <input type="text" class="form-control" placeholder="Price MAX" name="preco_minimo">
+                <br>
+                <input type="text" class="form-control" placeholder="Price MIN" name="preco_maximo">
+            </div>
+
+            <div class="col-sm">
+                <input type="date" class="form-control" name="prazo_minimo">
+                <br>
+                <input type="date" class="form-control" name="prazo_maximo">
+            </div>
+
+            <div class="col-sm">
+                <select class="form-control" name="categoria">
+                    <option value="D">Design</option>
+                    <option value="VD">Video Editor</option>
+                </select>
+                <br>
+                <input type="submit" class="btn btn-success btn-lg" value="FILTRAR">
+            </form>
+            </div>
+        </div>
+
+    <br>
+    <br>
+    <h2 class="titulo">JOB'S OPEN:</h2>
+        <div class="row justify-content-around">
+            <div class="col-6 row-card">
+                <div class="card-job">
+                    <div class="header-job">
+                    <h4 class="titulo-job">Thumb Creation</h4>
+                </div>
+                <div class="body-job">
+                    <p class="titulo-body">Description:</p>
+                    <div style="width: 70%">
+                    <p>What is Lorem Ipsum?Lorem Ipsum is simply
+                    dummy text of the printing and
+                    typesettingindustry. Lorem Ipsum has been</p>
+                </div>
+
+        <div class="row">
+            <div class="col-4">
+                <p class="titulo-body">Price:</p>
+                <p>$ 25,00</p>
+            </div>
+            <div class="col-4">
+                <p class="titulo-body">Deadline:</p>
+                <p>April 22</p>
+            </div>
+                <div class="col-4">
+                <p class="titulo-body">Category:</p>
+                <p>Design</p>
+            </div>
+        </div>
+
+    <button class="btn btn-success">View Details</button>
+
+    <br>
+    <br>
+    </div>
+    </div>
+    </div>
+    </div>
+    </div>
+{% endblock %}
