@@ -1,0 +1,132 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+
+{% block 'head' %}
+		<link rel="stylesheet" href="{% static 'jobs/css/find_jobs.css' %}">
+    <link rel="stylesheet" href="{% static 'jobs/css/profile.css' %}">
+{% endblock %}
+
+
+{% block 'body' %}
+    <br>
+    <br>
+    <div class="container">
+        {% if messages %}
+            {% for message in messages %}
+                <div class="alert {{message.tags}}">
+                    {{message}}
+                </div>
+            {% endfor %}
+        {% endif %}
+        <div style="width: 60%">
+            <form action="{% url 'profile' %}" method="POST">{% csrf_token %}
+                <p>Username:</p>
+                <input type="text" class="form-control" value="{{user.username}}" name="username">
+                <br>
+                <p>Email:</p>
+                <input type="email" class="form-control" value="{{user.email}}" name="email">
+                <br>
+                <p>First Name:</p>
+                <input type="text" class="form-control" value="{{user.first_name}}" name="primeiro_nome">
+                <br>
+                <p>Last Name:</p>
+                <input type="text" class="form-control" value="{{user.last_name}}" name="ultimo_nome">
+                <br>
+                <input type="submit" class="btn btn-success btn-lg" value="Save changes">
+            </form>
+        </div>
+        <br>    
+        <hr class="borda-degrade">
+        <br>
+        <h4 class="titulo">History</h4>
+
+        <table style="background-color: #222; color: white;" class="table table-striped">
+            <thead>
+                <tr>
+                <th scope="col">Image</th>
+                <th scope="col">Title</th>
+                <th scope="col">Category</th>
+                <th scope="col">Description</th>
+                <th scope="col">Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for job in jobs %}
+                    <tr>
+                        <th scope="row"><img width="100px" src="{{job.references.all.0}}"></th>
+                        <td>{{job.title}}</td>
+                        <td>{% if job.category == 'D'%}
+                                Design
+                            {% else %}
+                                Vídeo Edition
+                            {% endif%}
+                        </td>
+                        <td>
+                            {{job.description}}
+                        </td>
+                        <td>
+                            {% if job.status == 'WA'%}
+                            <span class="badge badge-info">Waiting Approval</span>
+                            {% elif job.status == 'IP' %}
+                            <button class="badge badge-primary" data-toggle="modal" data-target="#modal-job-{{job.id}}">Work in progress</button>
+                            {% else %}
+                                <span class="badge badge-success">Finished</span>
+                            {% endif %}
+                        </td>
+                    </tr>
+                {% endfor %}
+
+                {% for job in jobs %}
+                        {% if job.status == "IP"%}
+                            <div class="modal fade" id="modal-job-{{job.id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                <div class="modal-dialog" role="document">
+                                    <div style="background-color: #333;" class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 style="font-size: 30px" class="modal-title titulo" id="exampleModalLabel">JOB:</h5>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+
+                                        <div class="modal-body">
+                                            <h4 class="titulo-job">{{job.title}}</h4>
+                                            <br>
+                                            <h6 class="titulo-body">Status:</h6>
+
+                                            {% if job.status == 'WA'%}
+                                            <span class="badge badge-info">Waiting Approval</span>
+                                            {% elif job.status == 'IP' %}
+                                                <a class="badge badge-primary">Work in Progress</a>
+
+                                            {% else %}
+                                                <span class="badge badge-success">Finished</span>
+                                            {% endif %}
+
+                                            <h6 class="titulo-body">Deadline:</h6>
+                                            <p>{{job.deadline}}</p>
+
+                                            <hr style="border-color: yellow">
+                                            <form>
+
+                                                <input type="file" class="form-control" placeholder="Send files">
+                                                <br>
+                                                <input type="submit" value="Send" class="btn btn-success btn-lg">
+                                            
+                                            </form>
+
+                                        </div>
+                                    
+                                    </div>
+                                </div>
+                            </div>
+                        {% endif %}
+                    {% endfor %}
+               
+            </tbody>
+        </table>
+
+    </div>
+
+{% endblock %}

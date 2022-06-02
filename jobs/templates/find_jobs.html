@@ -77,11 +77,85 @@
                         </div>
 
                     </div>
-                <button class="btn btn-success">View Details</button>
+                <button class="btn btn-success" data-toggle="modal" data-target="#modal-{{job.id}}" >Details</button>
                 <br>
                 <br>
                 </div>
                 </div>
+                </div>
+
+                <div class="modal fade" id="modal-{{job.id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div style="background-color: #333;" class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title job-modal-titulo" id="exampleModalLabel">JOB:</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <div>
+                                    <h4 class="titulo-job">{{job.title}}</h4>
+                                    
+                                    <h6 class="titulo-body">Description:</h6>
+                
+                                    <p>{{job.description}}</p>
+                
+                                    <div class="row">
+                
+                                        <div class="col-4">
+                
+                                            <h6 class="titulo-body">Price:</h6>
+                
+                                            <p>{{job.price}}</p>
+                
+                                        </div>
+                
+                                        <div class="col-4">
+                
+                                            <h6 class="titulo-body">Deadline:</h6>
+                
+                                            <p>{{job.deadline}}</p>
+                
+                                        </div>
+                
+                                        <div class="col-4">
+                
+                                            <h6 class="titulo-body">Category:</h6>
+                
+                                            <p>{{job.category}}</p>
+                
+                                        </div>
+                
+                                        
+                
+                                    </div>
+                
+                                    <h4 style="display:inline;" class="job-modal-titulo">References:</h4>
+                                    <br>
+                                    <br>
+                                    <div class="row">
+                
+                                        {% for reference in job.references.all %}
+                                        <div class="col-4">
+                                            <img src="{{reference}}" width="100%"> 
+                                            
+                
+                                        </div>
+                                        {% endfor %}
+                
+                                        
+                
+                                    </div>
+                                    <br>
+                                    <br>
+                                    <a href="{% url 'accept_job' job.id %}" class="btn btn-success btn-lg">ACCEPT JOB</a>
+                
+                                </div>
+                            </div>
+                        
+                        </div>
+                    </div>
                 </div>
                 
             {% endfor %}

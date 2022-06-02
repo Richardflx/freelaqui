@@ -1,7 +1,11 @@
+from urllib import request
 from django.http import HttpResponse
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from datetime import datetime
 from .models import Job
+from django.contrib.auth.models import User
+from django.contrib import messages
+from django.contrib.messages import constants
 
 def find_jobs(request):
     if request.method == "GET":
@@ -38,3 +42,45 @@ def find_jobs(request):
     else:
         jobs = Job.objects.filter(reserved=False)
     return render(request, 'find_jobs.html', {'jobs': jobs})
+
+def accept_job(request, id):
+    job = Job.objects.get(id=id)
+    job.professional = request.user
+    job.reserved = True
+    job.save()
+    
+    return redirect('/jobs/find_jobs')
+
+
+def profile(request):
+    if request.method == 'GET':
+        jobs = Job.objects.filter(professional=request.user)
+        return render(request, 'profile.html', {'jobs': jobs})
+
+    elif request.method == "POST":
+        username = request.POST.get('username')
+        email = request.POST.get('email')
+        primeiro_nome = request.POST.get('primeiro_nome')
+        ultimo_nome = request.POST.get('ultimo_nome')
+
+        usuario = User.objects.filter(username=username).exclude(id=request.user.id)
+
+        if usuario.exists():
+            messages.add_message(request, constants.ERROR, 'Username already exists')
+            return redirect('/jobs/profile')
+
+        usuario = User.objects.filter(email=email).exclude(id=request.user.id)
+
+        if usuario.exists():
+            messages.add_message(request, constants.ERROR, 'Email is already in use')
+            return redirect('/jobs/profile')
+
+        
+        request.user.username = username
+        request.user.email = email
+        request.user.first_name = primeiro_nome
+        request.user.last_name = ultimo_nome
+        request.user.save()
+        messages.add_message(request, constants.SUCCESS, 'Changes made successfully')
+        return redirect('/jobs/profile')
+

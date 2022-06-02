@@ -24,7 +24,7 @@ class Job(models.Model):
     references = models.ManyToManyField(Reference)
     professional = models.ForeignKey(User, on_delete=models.DO_NOTHING, null=True, blank=True)
     reserved = models.BooleanField(default=False)
-    status = models.CharField(max_length=2, choices=status_choices, default='WA')
+    status = models.CharField(max_length=2, choices=status_choices, default='IP')
 
     def __str__(self) -> str:
         return self.title
